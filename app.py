@@ -78,8 +78,15 @@ st.markdown("""
 @st.cache_resource
 def load_data():
     try:
-        # Membaca data resep
+        # MEMBACA FILE BERSIH
+        # Pastikan nama file di GitHub Anda adalah 'resep_clean.csv'
         df = pd.read_csv('resep_clean.csv')
+        
+        # Pastikan kolom clean_text terisi
+        if 'clean_text' not in df.columns:
+             # Fallback jika user lupa cleaning: pakai full_text sementara
+            df['clean_text'] = df['full_text'].astype(str).str.lower()
+            
         df['clean_text'] = df['clean_text'].fillna('')
         return df
     except FileNotFoundError:
@@ -99,7 +106,7 @@ def build_model(df):
         # Kata kerja masak umum
         'resep', 'cara', 'membuat', 'bikin', 'masak', 'enak', 'lezat', 'mantap', 'praktis',
         'simple', 'mudah', 'ala', 'khas', 'menu', 'makan', 'siang', 'malam', 'pagi',
-        'video', 'tutorial', 'bumbu', 'dapur', 'sendiri'
+        'video', 'tutorial', 'bumbu', 'dapur', 'sendiri', 'mari', 'yuk', 'cobain'
     ]
     
     tfidf = TfidfVectorizer(stop_words=stopwords_resep)
@@ -129,7 +136,7 @@ with st.sidebar:
     st.write("---")
     st.write("🌶️ **Kategori:** Kuliner Nusantara")
     st.write("🤖 **Metode:** Content-Based Filtering")
-    st.caption("Tugas Mahasiswa SI - Amikom")
+    st.caption("Skripsi Mahasiswa SI - Amikom")
 
 # ==========================================
 # 4. HALAMAN UTAMA (DASHBOARD)
@@ -139,7 +146,7 @@ st.markdown('<div class="main-header">🍲 Nusantara Kitchen AI</div>', unsafe_a
 st.markdown('<div class="sub-header">Temukan Cita Rasa Warisan Leluhur Berdasarkan Bahanmu</div>', unsafe_allow_html=True)
 
 if df is None:
-    st.error("⚠️ FILE DATA HILANG! Mohon upload file 'resep_clean.csv' ke GitHub Anda.")
+    st.error("⚠️ FILE DATA HILANG! Pastikan Anda sudah upload file 'resep_clean.csv' ke GitHub.")
     st.stop()
 
 # Bangun Model
@@ -161,12 +168,12 @@ if cari_btn and keyword:
     with st.spinner('🔥 Mengulek bumbu & mencari resep...'):
         time.sleep(0.8) # Efek loading
         
-        # Cari di data
+        # Cari di data (di kolom clean_text)
         hasil = df[df['clean_text'].str.contains(keyword_lower)]
         
         if len(hasil) == 0:
             st.warning(f"Yah, Chef tidak menemukan resep dengan bahan **'{keyword}'**. Coba bahan lain ya!")
-            st.info("💡 Tips: Coba kata kunci bahan dasar seperti 'ayam', 'tahu', 'tempe', 'sapi'.")
+            st.info("💡 Tips: Coba kata kunci bahan dasar seperti 'ayam', 'tahu', 'tempe', 'sapi', 'ikan'.")
         else:
             # Ambil Patokan
             idx = hasil.index[0]
@@ -211,5 +218,4 @@ if cari_btn and keyword:
                 """, unsafe_allow_html=True)
 
 st.write("")
-
-st.markdown("<center style='color: #888; font-size: 12px; margin-top: 50px;'>Dibuat dengan ❤️ & 🌶️</center>", unsafe_allow_html=True)
+st.markdown("<center style='color: #888; font-size: 12px; margin-top: 50px;'>Dibuat dengan ❤️ & 🌶️ untuk Skripsi</center>", unsafe_allow_html=True)
