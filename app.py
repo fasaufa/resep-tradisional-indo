@@ -129,7 +129,7 @@ with st.sidebar:
     st.write("---")
     st.write("🌶️ **Kategori:** Kuliner Nusantara")
     st.write("🤖 **Metode:** Content-Based Filtering")
-    st.caption("Skripsi Mahasiswa SI - Amikom")
+    st.caption("Tugas Mahasiswa SI - Amikom")
 
 # ==========================================
 # 4. HALAMAN UTAMA (DASHBOARD)
@@ -211,4 +211,5 @@ if cari_btn and keyword:
                 """, unsafe_allow_html=True)
 
 st.write("")
-st.markdown("<center style='color: #888; font-size: 12px; margin-top: 50px;'>Dibuat dengan ❤️ & 🌶️ untuk Skripsi</center>", unsafe_allow_html=True)
+
+st.markdown("<center style='color: #888; font-size: 12px; margin-top: 50px;'>Dibuat dengan ❤️ & 🌶️</center>", unsafe_allow_html=True)
